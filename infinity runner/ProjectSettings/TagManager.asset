@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - road
+  - sideWall
+  - whole_prefab
+  - destruction
   layers:
   - Default
   - TransparentFX

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 325071639020651502}
   - component: {fileID: 4926319399928465393}
   - component: {fileID: 3016312061834190640}
+  - component: {fileID: -602289338936735878}
   m_Layer: 0
   m_Name: Car_Ambulance
   m_TagString: Untagged
@@ -110,6 +111,33 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2.7468305, y: 2.4806275, z: 6.642056}
   m_Center: {x: 0.0027962327, y: 1.6063898, z: -0.3313737}
+--- !u!54 &-602289338936735878
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 310566361941181620}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &2439048382522746260
 GameObject:
   m_ObjectHideFlags: 0
@@ -121,6 +149,7 @@ GameObject:
   - component: {fileID: 485757674744421760}
   - component: {fileID: 8850197550530134979}
   - component: {fileID: 5702868457493221212}
+  - component: {fileID: 3036099129812522823}
   m_Layer: 0
   m_Name: Ambulance BR Tire
   m_TagString: Untagged
@@ -193,6 +222,27 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!135 &3036099129812522823
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2439048382522746260}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Radius: 0.4219334
+  m_Center: {x: -0.011946365, y: 0.000000059604645, z: 0.000000059604645}
 --- !u!1 &5381450633901129179
 GameObject:
   m_ObjectHideFlags: 0
@@ -204,6 +254,7 @@ GameObject:
   - component: {fileID: 824652145776999900}
   - component: {fileID: 6366394372090299334}
   - component: {fileID: 7894724111616823920}
+  - component: {fileID: 4804566572538143667}
   m_Layer: 0
   m_Name: Ambulance FL Tire
   m_TagString: Untagged
@@ -276,6 +327,27 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!135 &4804566572538143667
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5381450633901129179}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Radius: 0.4219331
+  m_Center: {x: 0.011946574, y: 0, z: 0}
 --- !u!1 &8619935825326729207
 GameObject:
   m_ObjectHideFlags: 0
@@ -287,6 +359,7 @@ GameObject:
   - component: {fileID: 7481280999793272246}
   - component: {fileID: 9194031466316000818}
   - component: {fileID: 7129159201601906299}
+  - component: {fileID: 3918629404168490506}
   m_Layer: 0
   m_Name: Ambulance FR Tire
   m_TagString: Untagged
@@ -359,6 +432,27 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!135 &3918629404168490506
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8619935825326729207}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Radius: 0.4219331
+  m_Center: {x: -0.011946499, y: 0.000000029802322, z: 0}
 --- !u!1 &8882961667383225220
 GameObject:
   m_ObjectHideFlags: 0
@@ -370,6 +464,7 @@ GameObject:
   - component: {fileID: 6368719671465757487}
   - component: {fileID: 1495191551376404499}
   - component: {fileID: 232324458858924454}
+  - component: {fileID: 430686816703501983}
   m_Layer: 0
   m_Name: Ambulance BL Tire
   m_TagString: Untagged
@@ -442,3 +537,24 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!135 &430686816703501983
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8882961667383225220}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Radius: 0.4219334
+  m_Center: {x: 0.011946559, y: 0, z: 0.00000011920929}
