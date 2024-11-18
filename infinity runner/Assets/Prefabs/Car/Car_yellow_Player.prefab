@@ -179,7 +179,7 @@ GameObject:
   - component: {fileID: 6830742372337660092}
   - component: {fileID: 144918211945116541}
   m_Layer: 0
-  m_Name: Car_yellow
+  m_Name: Car_yellow_Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

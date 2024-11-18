@@ -46,6 +46,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SideOfTheRoad_Trees
       objectReference: {fileID: 0}
+    - target: {fileID: 533732219342138127, guid: 54e02748a4496e2868c23383a5bece92, type: 3}
+      propertyPath: m_TagString
+      value: sideWall
+      objectReference: {fileID: 0}
     - target: {fileID: 634212537881017393, guid: 54e02748a4496e2868c23383a5bece92, type: 3}
       propertyPath: m_LocalScale.x
       value: 2
@@ -177,6 +181,10 @@ PrefabInstance:
     - target: {fileID: 533732219342138127, guid: 54e02748a4496e2868c23383a5bece92, type: 3}
       propertyPath: m_Name
       value: SideOfTheRoad_Trees
+      objectReference: {fileID: 0}
+    - target: {fileID: 533732219342138127, guid: 54e02748a4496e2868c23383a5bece92, type: 3}
+      propertyPath: m_TagString
+      value: sideWall
       objectReference: {fileID: 0}
     - target: {fileID: 634212537881017393, guid: 54e02748a4496e2868c23383a5bece92, type: 3}
       propertyPath: m_LocalScale.x
