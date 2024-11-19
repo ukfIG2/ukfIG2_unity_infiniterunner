@@ -63,6 +63,10 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.tag!= "road")
         {
             GameManager._gameOver = true;
+            Debug.Log(collision.gameObject);
+            Debug.Log(collision.gameObject.tag);
+
         }
+
     }
 }

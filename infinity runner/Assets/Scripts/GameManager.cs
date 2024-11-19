@@ -1,6 +1,7 @@
-using Unity.VisualScripting;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Experimental.GlobalIllumination;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -9,147 +10,186 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject _playerCar;
 
     public enum GameMode { SinglePlayer, OneEnemy, HardCore }
-    [SerializeField]  public static GameMode CurrentGameMode;
+    [SerializeField] public static GameMode CurrentGameMode;
 
     private const int TotalRoadsToSpawn = 30;
-    private const int DestroyThreshold = 4*20; // How many roads are destroyed before spawning a new batch
+    private const int DestroyThreshold = 4 * 20; // How many roads are destroyed before spawning a new batch
     private const float RoadOffsetZ = 30f;   // Distance between consecutive road segments
 
     private Vector3 _currentSpawnPosition = Vector3.zero; // Tracks where the next road will be spawned
     private bool _spawnTreesNext = true;
 
-    [SerializeField]    private int _destroyedRoadsCount = 0; // Tracks the number of destroyed roads
+    [SerializeField] private int _destroyedRoadsCount = 0; // Tracks the number of destroyed roads
 
     public static int _level;
-    [SerializeField]  private int _skore;
-    [SerializeField]    private int _nextSkore;
+    [SerializeField] private int _score;
+    [SerializeField] private int _nextScore;
 
     public static bool _gameOver;
 
+    [SerializeField] private GameObject _pauseMenuUI;  // Reference to the Pause Menu UI
+    [SerializeField] private GameObject _gameOverUI;  // Reference to the Game Over UI
+    [SerializeField] private TMPro.TextMeshProUGUI _scoreText; // Reference to the score text in the UI
+    [SerializeField] private TMPro.TextMeshProUGUI _levelText; // Reference to the level text in the UI
+
+    private bool _isPaused;
+
     public void Awake()
     {
-        // Optional: Initialize if needed
         Physics.gravity = new Vector3(0, -20f, 0);
         _gameOver = false;
+        _isPaused = false;
+
+        if (_pauseMenuUI != null) _pauseMenuUI.SetActive(false);
+        if (_gameOverUI != null) _gameOverUI.SetActive(false);
     }
 
     public void Start()
     {
+        Time.timeScale = 1;
         _level = 1;
-        _skore = 0;
-        _nextSkore = 2000;
-        // Spawn the initial batch of roads
-        SpawnNextRoadBatch();
+        _score = 0;
+        _nextScore = 2000;
 
-        // Spawn the player at the first road position
+        SpawnNextRoadBatch();
         SpawnPlayer();
+        
+
         Debug.Log("Starting " + CurrentGameMode);
     }
 
     public void Update()
     {
-        _skore += (int)Time.timeScale;
-        if (_skore >= _nextSkore)
-        {
-            _level++;
-            _nextSkore += 2000;
-        }
         if (_gameOver)
         {
-            // Add game over logic here
-            Time.timeScale = 0;
-            Debug.Log("Game Over!");
+            HandleGameOver();
+            return;
+        }
+
+        HandlePause();
+
+        // Update score and level progression
+        _score += (int)(Time.deltaTime * 100); // Score increments over time
+        if (_score >= _nextScore)
+        {
+            _level++;
+            _nextScore += 2000;
+            UpdateUI(); // Update UI when level changes
+        }
+
+        UpdateUI();
+    }
+
+    private void HandlePause()
+    {
+        if (Input.GetKeyDown(KeyCode.P) || Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Space))
+        {
+            if (_isPaused)
+            {
+                ResumeGame();
+            }
+            else
+            {
+                PauseGame();
+            }
         }
     }
 
+    private void PauseGame()
+    {
+        _isPaused = true;
+        Time.timeScale = 0;
+        if (_pauseMenuUI != null) _pauseMenuUI.SetActive(true);
+    }
+
+    private void ResumeGame()
+    {
+        _isPaused = false;
+        Time.timeScale = 1;
+        if (_pauseMenuUI != null) _pauseMenuUI.SetActive(false);
+    }
+
+    private void HandleGameOver()
+    {
+        Time.timeScale = 0;
+        if (_gameOverUI != null) _gameOverUI.SetActive(true);
+
+        if (_scoreText != null) _scoreText.text = $"Final Score: {_score}";
+        if (_levelText != null) _levelText.text = $"Level Reached: {_level}";
+    }
 
     public void NotifyRoadDestroyed()
     {
-        // Increment the destroyed road count
         _destroyedRoadsCount++;
-
-        // Check if a new batch of roads needs to be spawned
         if (_destroyedRoadsCount >= DestroyThreshold)
         {
-            _destroyedRoadsCount = 0; // Reset the counter
+            _destroyedRoadsCount = 0;
             SpawnNextRoadBatch();
         }
     }
 
     private void SpawnNextRoadBatch()
     {
-        // Spawn a batch of roads based on the current theme
         for (int i = 0; i < TotalRoadsToSpawn; i++)
         {
             SpawnRoadSegment();
         }
 
-        // Alternate between road themes
         _spawnTreesNext = !_spawnTreesNext;
     }
 
     private void SpawnRoadSegment()
     {
-        GameObject newRoadSegment;
-
-        // Choose the correct prefab based on the theme
-        if (_spawnTreesNext)
-        {
-            newRoadSegment = Instantiate(_prefabForRoadWithTrees);
-        }
-        else
-        {
-            newRoadSegment = Instantiate(_prefabForRoadWithCorn);
-        }
-
-        // Set the position of the new road segment
+        GameObject newRoadSegment = _spawnTreesNext ? Instantiate(_prefabForRoadWithTrees) : Instantiate(_prefabForRoadWithCorn);
         newRoadSegment.transform.position = _currentSpawnPosition;
-
-        // Update the spawn position for the next road segment
         _currentSpawnPosition.z += RoadOffsetZ;
     }
 
-private void SpawnPlayer()
-{
-    // Position the player at the start of the first road with a slight forward offset
-    Vector3 playerStartPosition = new Vector3(0f, 1f, 0f);
-
-    // Spawn the player car at the starting position
-    GameObject player = Instantiate(_playerCar, playerStartPosition, Quaternion.identity);
-
-    // Find the Main Camera in the scene
-    Camera mainCamera = Camera.main;
-
-    if (mainCamera != null)
+    private void SpawnPlayer()
     {
-        // Set the Main Camera as a child of the player
-        mainCamera.transform.SetParent(player.transform);
+        Vector3 playerStartPosition = new Vector3(0f, 1f, 0f);
+        GameObject player = Instantiate(_playerCar, playerStartPosition, Quaternion.identity);
 
-        // Optionally, adjust the position of the camera relative to the player
-        mainCamera.transform.localPosition = new Vector3(0f, 5f, -10f);
-        mainCamera.transform.localRotation = Quaternion.Euler(10f, 0f, 0f);
-    }
-    else
-    {
-        Debug.LogWarning("Main Camera not found in the scene.");
+        Camera mainCamera = Camera.main;
+        if (mainCamera != null)
+        {
+            mainCamera.transform.SetParent(player.transform);
+            mainCamera.transform.localPosition = new Vector3(0f, 5f, -10f);
+            mainCamera.transform.localRotation = Quaternion.Euler(10f, 0f, 0f);
+        }
+
+        Light spotLight = FindObjectOfType<Light>();
+        if (spotLight != null && spotLight.type == LightType.Spot)
+        {
+            spotLight.transform.SetParent(player.transform);
+            spotLight.transform.localPosition = new Vector3(0f, 12f, -29f);
+            spotLight.transform.localRotation = Quaternion.Euler(9f, 0f, 0f);
+        }
     }
 
-    // Find the Spot Light in the scene
-    Light spotLight = FindObjectOfType<Light>();
-
-    if (spotLight != null && spotLight.type == UnityEngine.LightType.Spot)
+    private void UpdateUI()
     {
-        // Set the Spot Light as a child of the player
-        spotLight.transform.SetParent(player.transform);
-
-        // Optionally, adjust the position of the light relative to the player
-        spotLight.transform.localPosition = new Vector3(0f, 12f, -29f);
-        spotLight.transform.localRotation = Quaternion.Euler(9f, 0f, 0f);
+        if (_scoreText != null) _scoreText.text = $"Score: {_score}";
+        if (_levelText != null) _levelText.text = $"Level: {_level}";
     }
-    else
+
+    public void RestartGame()
     {
-        Debug.LogWarning("Spot Light not found in the scene.");
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
-}
 
+    public void MainMenu()
+    {
+        SceneManager.LoadScene("MainMenu");
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
+
+    public void GameOver()
+    {
+        _gameOver = true;
+    }
 }
