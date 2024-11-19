@@ -18,7 +18,6 @@ public class CarController : MonoBehaviour
     {
         // Set the initial speed randomly from the speeds array
         speed = speeds[Random.Range(0, speeds.Length)];
-        Debug.Log(Physics.gravity);
     }
 
     void Update()

@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject _playerCar;
 
     public enum GameMode { SinglePlayer, OneEnemy, HardCore }
-    private GameMode _currentGameMode;
+    [SerializeField]  public static GameMode CurrentGameMode;
 
     private const int TotalRoadsToSpawn = 30;
     private const int DestroyThreshold = 4*20; // How many roads are destroyed before spawning a new batch
@@ -32,6 +32,7 @@ public class GameManager : MonoBehaviour
 
         // Spawn the player at the first road position
         SpawnPlayer();
+        Debug.Log("Starting " + CurrentGameMode);
     }
 
     public void Update()
@@ -41,7 +42,7 @@ public class GameManager : MonoBehaviour
 
     public void SelectGameMode(GameMode mode)
     {
-        _currentGameMode = mode;
+        CurrentGameMode = mode;
     }
 
     public void NotifyRoadDestroyed()
