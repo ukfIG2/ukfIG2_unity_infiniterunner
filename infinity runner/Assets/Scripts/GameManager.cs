@@ -125,7 +125,7 @@ private void SpawnPlayer()
 
         // Optionally, adjust the position of the light relative to the player
         spotLight.transform.localPosition = new Vector3(0f, 12f, -29f);
-        spotLight.transform.localRotation = Quaternion.Euler(6f, 0f, 0f);
+        spotLight.transform.localRotation = Quaternion.Euler(9f, 0f, 0f);
     }
     else
     {
