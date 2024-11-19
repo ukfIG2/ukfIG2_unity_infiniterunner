@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
     public void Awake()
     {
         // Optional: Initialize if needed
+        Physics.gravity = new Vector3(0, -20f, 0);
     }
 
     public void Start()

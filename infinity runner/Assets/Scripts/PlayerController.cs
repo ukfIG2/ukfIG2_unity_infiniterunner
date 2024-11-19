@@ -6,7 +6,7 @@ public class PlayerController : MonoBehaviour
 {
     private Rigidbody rb;
     [SerializeField] private float speed = 0f;
-    private const float maxSpeed = 50f;
+    private const float maxSpeed = 100f;
     private const float acceleration = 10f;
     private const float deceleration = 50f;
     private const float lateralSpeedFactor = 0.2f; // Determines how lateral speed scales with forward speed

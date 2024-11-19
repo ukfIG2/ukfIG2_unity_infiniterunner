@@ -25,5 +25,13 @@ public class Destruction : MonoBehaviour
             gameManager?.NotifyRoadDestroyed(); // Use null-check to avoid errors
             Destroy(other.gameObject);
         }
+        if (other.CompareTag("car"))
+        {
+            Destroy(other.gameObject);
+        }
+        if (other.CompareTag("carSpawner"))
+        {
+            Destroy(other.gameObject);
+        }
     }
 }

@@ -677,9 +677,10 @@ GameObject:
   - component: {fileID: 1626287158236440127}
   - component: {fileID: 7476015686120776681}
   - component: {fileID: -6686182604022828782}
+  - component: {fileID: 659148258914823485}
   m_Layer: 0
   m_Name: Car_tank
-  m_TagString: Untagged
+  m_TagString: car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -807,6 +808,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &659148258914823485
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6776426288857860124}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d73637518e5e2dfea8afe46ee12acd1c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7647011262813256484
 GameObject:
   m_ObjectHideFlags: 0
