@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Experimental.GlobalIllumination;
 
@@ -19,14 +20,24 @@ public class GameManager : MonoBehaviour
 
     [SerializeField]    private int _destroyedRoadsCount = 0; // Tracks the number of destroyed roads
 
+    public static int _level;
+    [SerializeField]  private int _skore;
+    [SerializeField]    private int _nextSkore;
+
+    public static bool _gameOver;
+
     public void Awake()
     {
         // Optional: Initialize if needed
         Physics.gravity = new Vector3(0, -20f, 0);
+        _gameOver = false;
     }
 
     public void Start()
     {
+        _level = 1;
+        _skore = 0;
+        _nextSkore = 2000;
         // Spawn the initial batch of roads
         SpawnNextRoadBatch();
 
@@ -37,13 +48,20 @@ public class GameManager : MonoBehaviour
 
     public void Update()
     {
-        // Logic to trigger spawning based on player's position or other criteria can go here
+        _skore += (int)Time.timeScale;
+        if (_skore >= _nextSkore)
+        {
+            _level++;
+            _nextSkore += 2000;
+        }
+        if (_gameOver)
+        {
+            // Add game over logic here
+            Time.timeScale = 0;
+            Debug.Log("Game Over!");
+        }
     }
 
-    public void SelectGameMode(GameMode mode)
-    {
-        CurrentGameMode = mode;
-    }
 
     public void NotifyRoadDestroyed()
     {

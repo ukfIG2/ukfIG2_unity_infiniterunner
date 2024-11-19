@@ -15,6 +15,9 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rb = this.GetComponent<Rigidbody>();
+
+        // Lock all rotations to prevent spinning
+        rb.constraints = RigidbodyConstraints.FreezeRotation;
     }
 
     // Update is called once per frame
@@ -51,5 +54,15 @@ public class PlayerController : MonoBehaviour
 
         // Apply the movement to the Rigidbody
         rb.velocity = moveDirection;
+    }
+
+    //on collision detection GameManager._gameOver true
+    private void OnCollisionEnter(Collision collision)
+    {
+        //if it is anything else then compare tag road
+        if (collision.gameObject.tag!= "road")
+        {
+            GameManager._gameOver = true;
+        }
     }
 }

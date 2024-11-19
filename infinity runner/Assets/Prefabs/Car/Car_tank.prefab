@@ -680,7 +680,7 @@ GameObject:
   - component: {fileID: 659148258914823485}
   m_Layer: 0
   m_Name: Car_tank
-  m_TagString: car
+  m_TagString: Undefined
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -820,6 +820,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d73637518e5e2dfea8afe46ee12acd1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sideSpeedMultiplier: 0.5
+  detectionRange: 10
+  carLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &7647011262813256484
 GameObject:
   m_ObjectHideFlags: 0

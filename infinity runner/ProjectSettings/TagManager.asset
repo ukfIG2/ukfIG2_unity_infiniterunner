@@ -8,6 +8,9 @@ TagManager:
   - sideWall
   - whole_prefab
   - destruction
+  - car
+  - Undefined
+  - carSpawner
   layers:
   - Default
   - TransparentFX

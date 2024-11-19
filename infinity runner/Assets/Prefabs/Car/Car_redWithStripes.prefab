@@ -317,6 +317,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d73637518e5e2dfea8afe46ee12acd1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sideSpeedMultiplier: 0.5
+  detectionRange: 10
+  carLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &3906426639637097555
 GameObject:
   m_ObjectHideFlags: 0
