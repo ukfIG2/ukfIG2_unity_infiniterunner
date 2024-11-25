@@ -405,6 +405,7 @@ MonoBehaviour:
   carLayerMask:
     serializedVersion: 2
     m_Bits: 0
+  maxSideDistance: 2
 --- !u!1 &7697156214452776573
 GameObject:
   m_ObjectHideFlags: 0

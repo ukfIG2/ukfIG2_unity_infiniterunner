@@ -2,71 +2,102 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
 public class CarController : MonoBehaviour
 {
     private float speed;
     private float[] speeds = { 20f, 25f, 30f, 35f, 40f, 45f, 50f, 55f, 60f };
 
-    [SerializeField] private float sideSpeedMultiplier = 0.5f; // Controls the proportion of side movement speed
-    [SerializeField] private float detectionRange = 10f; // Range to detect slower cars
-    [SerializeField] private LayerMask carLayerMask; // Layer to filter which objects are considered cars
+    [SerializeField] private float sideSpeedMultiplier = 0.5f;
+    [SerializeField] private float detectionRange = 10f;
+    [SerializeField] private LayerMask carLayerMask;
+    [SerializeField] private float maxSideDistance = 2f;
 
-    private Vector3 sideMovementDirection; // Direction for side movement
-    private bool isAvoiding = false; // Whether the car is actively avoiding another car
+    private Vector3 sideMovementDirection;
+    private bool isAvoiding = false;
+    private Rigidbody rb;
 
     void Start()
     {
-        // Set the initial speed randomly from the speeds array
+        rb = GetComponent<Rigidbody>();
+        rb.isKinematic = false;
+        rb.constraints = RigidbodyConstraints.FreezeRotation;
+
+        // Ignorovať kolízie medzi autami vo vrstve "Cars"
+        int carLayer = LayerMask.NameToLayer("Cars");
+        Physics.IgnoreLayerCollision(carLayer, carLayer);
+
+        // Nastaviť náhodnú rýchlosť
         speed = speeds[Random.Range(0, speeds.Length)];
     }
 
-    void Update()
+    void FixedUpdate()
     {
-        // Move the car forward
-        transform.Translate(Vector3.forward * speed * Time.deltaTime);
+        // Resetovať vertikálnu rýchlosť
+        rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
 
-        // Check for slower cars and adjust lateral movement
+        // Pohyb dopredu
+        Vector3 forwardMovement = transform.forward * speed * Time.fixedDeltaTime;
+        rb.MovePosition(rb.position + forwardMovement);
+
+        // Detekcia pomalších áut
         DetectAndAvoidSlowerCar();
 
-        // Apply side movement if avoiding
+        // Bočný pohyb pri vyhýbaní sa
         if (isAvoiding)
         {
-            transform.Translate(sideMovementDirection * speed * sideSpeedMultiplier * Time.deltaTime, Space.World);
+            Vector3 lateralMovement = sideMovementDirection * speed * sideSpeedMultiplier * Time.fixedDeltaTime;
+            rb.MovePosition(rb.position + lateralMovement);
         }
     }
 
     private void DetectAndAvoidSlowerCar()
     {
         RaycastHit hit;
-        Vector3 rayOrigin = transform.position + Vector3.up * 1f; // Adjust height to avoid ground interference
+        Vector3 rayOrigin = transform.position + Vector3.up * 1f;
         Vector3 rayDirection = transform.forward;
 
-        // Check if there's a slower car in front
         if (Physics.Raycast(rayOrigin, rayDirection, out hit, detectionRange, carLayerMask))
         {
             CarController otherCar = hit.collider.GetComponent<CarController>();
 
-            // Ensure the detected object is a car and is slower
             if (otherCar != null && otherCar.speed < speed)
             {
-                // Calculate side movement direction (left or right based on proximity to edges, or choose randomly)
                 if (!isAvoiding)
                 {
                     sideMovementDirection = Random.Range(0, 2) == 0 ? Vector3.right : Vector3.left;
+
+                    float currentX = transform.position.x;
+                    if (currentX > maxSideDistance) sideMovementDirection = Vector3.left;
+                    else if (currentX < -maxSideDistance) sideMovementDirection = Vector3.right;
+
                     isAvoiding = true;
                 }
             }
         }
         else
         {
-            // Stop side movement if no slower car is detected
             isAvoiding = false;
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        CarController otherCar = collision.collider.GetComponent<CarController>();
+
+        if (otherCar != null)
+        {
+            // Znížiť rýchlosť pri kontakte s pomalším autom
+            if (otherCar.speed < speed)
+            {
+                speed -= 5f;
+                if (speed < 20f) speed = 20f; // Minimálna rýchlosť
+            }
         }
     }
 
     private void OnDrawGizmos()
     {
-        // Visualize the raycast for debugging
         Gizmos.color = Color.red;
         Gizmos.DrawRay(transform.position + Vector3.up * 1f, transform.forward * detectionRange);
     }

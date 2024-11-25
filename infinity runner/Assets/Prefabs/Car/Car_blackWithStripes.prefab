@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6119977982920759261}
   - component: {fileID: 5088084811558134468}
   - component: {fileID: 3564346619808223528}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Simple Car_9 FR Tire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -117,7 +117,7 @@ GameObject:
   - component: {fileID: 1185978845405405400}
   - component: {fileID: 3559888669362165745}
   - component: {fileID: 1294917226685677319}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Simple Car_9 FL Tire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -222,7 +222,7 @@ GameObject:
   - component: {fileID: 4085816853580053310}
   - component: {fileID: 2699542266512676648}
   - component: {fileID: 1811645817682938035}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Simple Car_9 BL Tire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -327,7 +327,7 @@ GameObject:
   - component: {fileID: 4104691261730229883}
   - component: {fileID: 4813272653818459732}
   - component: {fileID: 2098189836618113322}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Simple Car_9 BR Tire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -576,3 +576,4 @@ MonoBehaviour:
   carLayerMask:
     serializedVersion: 2
     m_Bits: 0
+  maxSideDistance: 2

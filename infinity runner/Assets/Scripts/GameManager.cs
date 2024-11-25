@@ -31,6 +31,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject _gameOverUI;  // Reference to the Game Over UI
     [SerializeField] private TMPro.TextMeshProUGUI _scoreText; // Reference to the score text in the UI
     [SerializeField] private TMPro.TextMeshProUGUI _levelText; // Reference to the level text in the UI
+    [SerializeField] private TMPro.TextMeshProUGUI _pauseButtonText; // Reference to Pause/Resume button text
 
     private bool _isPaused;
 
@@ -84,14 +85,22 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.P) || Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Space))
         {
-            if (_isPaused)
-            {
-                ResumeGame();
-            }
-            else
-            {
-                PauseGame();
-            }
+            TogglePause();
+        }
+    }
+
+    // TogglePause method for use in UI buttons
+    public void TogglePause()
+    {
+        if (_isPaused)
+        {
+            ResumeGame();
+            if (_pauseButtonText != null) _pauseButtonText.text = "Pause";
+        }
+        else
+        {
+            PauseGame();
+            if (_pauseButtonText != null) _pauseButtonText.text = "Resume";
         }
     }
 
@@ -193,3 +202,4 @@ public class GameManager : MonoBehaviour
         _gameOver = true;
     }
 }
+
