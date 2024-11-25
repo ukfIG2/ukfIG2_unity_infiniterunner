@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class PlayerController : MonoBehaviour
 {
@@ -9,7 +10,9 @@ public class PlayerController : MonoBehaviour
     private const float maxSpeed = 100f;
     private const float acceleration = 10f;
     private const float deceleration = 50f;
-    private const float lateralSpeedFactor = 0.2f; // Determines how lateral speed scales with forward speed
+    private const float lateralSpeedFactor = 0.2f;
+
+    private TextMeshProUGUI speedText; // TMP text pre zobrazenie rýchlosti
 
     // Start is called before the first frame update
     void Start()
@@ -18,6 +21,19 @@ public class PlayerController : MonoBehaviour
 
         // Lock all rotations to prevent spinning
         rb.constraints = RigidbodyConstraints.FreezeRotation;
+
+        // Nájdeme TMP Text v scéne podľa mena alebo tagu
+        GameObject speedTextObject = GameObject.Find("SpeedText"); // Zmeň meno podľa názvu TMP objektu
+        if (speedTextObject != null)
+        {
+            speedText = speedTextObject.GetComponent<TextMeshProUGUI>();
+        }
+
+        // Kontrola, či bol TMP nájdený
+        if (speedText == null)
+        {
+            Debug.LogError("Speed Text (TMP) not found! Ensure the TMP Text is named 'SpeedText' or set it manually.");
+        }
     }
 
     // Update is called once per frame
@@ -54,19 +70,21 @@ public class PlayerController : MonoBehaviour
 
         // Apply the movement to the Rigidbody
         rb.velocity = moveDirection;
+
+        // Update the speed text on the screen
+        if (speedText != null)
+        {
+            speedText.text = $"Speed: {speed:F2} km/h";
+        }
     }
 
-    //on collision detection GameManager._gameOver true
+    // On collision detection, end the game if the tag is not "road"
     private void OnCollisionEnter(Collision collision)
     {
-        //if it is anything else then compare tag road
-        if (collision.gameObject.tag!= "road")
+        if (collision.gameObject.tag != "road")
         {
             GameManager._gameOver = true;
-            Debug.Log(collision.gameObject);
-            Debug.Log(collision.gameObject.tag);
-
+            Debug.Log($"Collision detected with: {collision.gameObject.name}, Tag: {collision.gameObject.tag}");
         }
-
     }
 }

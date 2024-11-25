@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
@@ -12,32 +13,31 @@ public class GameManager : MonoBehaviour
     public enum GameMode { SinglePlayer, OneEnemy, HardCore }
     [SerializeField] public static GameMode CurrentGameMode;
 
-    private const int TotalRoadsToSpawn = 30;
-    private const int DestroyThreshold = 4 * 20; // How many roads are destroyed before spawning a new batch
-    private const float RoadOffsetZ = 30f;   // Distance between consecutive road segments
+    private const int TotalRoadsToSpawn = 32; // Počet ciest na dávku
+    private const int DestroyThreshold = 80; // Počet zničených ciest pred novou dávkou
+    private const float RoadOffsetZ = 30f;   // Vzdialenosť medzi segmentmi ciest
 
-    private Vector3 _currentSpawnPosition = Vector3.zero; // Tracks where the next road will be spawned
-    private bool _spawnTreesNext = true;
+    private Vector3 _currentSpawnPosition = Vector3.zero; // Pozícia pre ďalší segment cesty
+    private bool _spawnTreesNext = true; // Prepínač medzi stromami a kukuricou
 
-    [SerializeField] private int _destroyedRoadsCount = 0; // Tracks the number of destroyed roads
-
+    [SerializeField] private int _destroyedRoadsCount = 0; // Počet zničených ciest
     public static int _level;
     [SerializeField] private int _score;
     [SerializeField] private int _nextScore;
 
     public static bool _gameOver;
 
-    [SerializeField] private GameObject _pauseMenuUI;  // Reference to the Pause Menu UI
-    [SerializeField] private GameObject _gameOverUI;  // Reference to the Game Over UI
-    [SerializeField] private TMPro.TextMeshProUGUI _scoreText; // Reference to the score text in the UI
-    [SerializeField] private TMPro.TextMeshProUGUI _levelText; // Reference to the level text in the UI
-    [SerializeField] private TMPro.TextMeshProUGUI _pauseButtonText; // Reference to Pause/Resume button text
+    [SerializeField] private GameObject _pauseMenuUI;  // UI pre pauzu
+    [SerializeField] private GameObject _gameOverUI;  // UI pre Game Over
+    [SerializeField] private TMPro.TextMeshProUGUI _scoreText; // Zobrazenie skóre
+    [SerializeField] private TMPro.TextMeshProUGUI _levelText; // Zobrazenie levelu
+    [SerializeField] private TMPro.TextMeshProUGUI _pauseButtonText; // Zobrazenie textu tlačidla Pause/Resume
 
     private bool _isPaused;
 
     public void Awake()
     {
-        Physics.gravity = new Vector3(0, -20f, 0);
+        Physics.gravity = new Vector3(0, -20f, 0); // Nastavenie gravitácie
         _gameOver = false;
         _isPaused = false;
 
@@ -52,11 +52,10 @@ public class GameManager : MonoBehaviour
         _score = 0;
         _nextScore = 2000;
 
-        SpawnNextRoadBatch();
-        SpawnPlayer();
-        
+        SpawnNextRoadBatch(); // Inicializácia ciest
+        SpawnPlayer(); // Spawn hráča
 
-        Debug.Log("Starting " + CurrentGameMode);
+        Debug.Log("Starting game mode: " + CurrentGameMode);
     }
 
     public void Update()
@@ -69,13 +68,13 @@ public class GameManager : MonoBehaviour
 
         HandlePause();
 
-        // Update score and level progression
-        _score += (int)(Time.deltaTime * 100); // Score increments over time
+        // Aktualizácia skóre a levelu
+        _score += (int)(Time.deltaTime * 100); // Pridávanie skóre za čas
         if (_score >= _nextScore)
         {
             _level++;
             _nextScore += 2000;
-            UpdateUI(); // Update UI when level changes
+            UpdateUI(); // Aktualizácia UI pri zmene levelu
         }
 
         UpdateUI();
@@ -89,7 +88,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // TogglePause method for use in UI buttons
+    // Prepínanie medzi pauzou a pokračovaním hry
     public void TogglePause()
     {
         if (_isPaused)
@@ -144,7 +143,7 @@ public class GameManager : MonoBehaviour
             SpawnRoadSegment();
         }
 
-        _spawnTreesNext = !_spawnTreesNext;
+        _spawnTreesNext = !_spawnTreesNext; // Prepnutie typu cesty
     }
 
     private void SpawnRoadSegment()
