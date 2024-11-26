@@ -1,12 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+
 
 public class StartCanvas : MonoBehaviour
 {
     [SerializeField] private GameObject _mainMenu; // Reference to the Main Menu UI
     [SerializeField] private GameObject _levelMenu; // Reference to the Level Selection UI
+    [SerializeField] private TMP_InputField InputNameField;
+    [SerializeField] private DatabaseManager _databaseManager;
+
+
 
     private void Start()
     {
@@ -65,5 +72,15 @@ public class StartCanvas : MonoBehaviour
     public void QuitGame()
     {
         Application.Quit();
+    }
+
+    public void EnterNickname()
+    {
+        //gwt name from input text and pput it into playerprefer AutorName
+        PlayerPrefs.SetString("PlayerNickname", InputNameField.text);
+        PlayerPrefs.SetInt("PlayerMaxScore",_databaseManager.MaxScore(PlayerPrefs.GetString("PlayerNickname")));
+        SceneManager.LoadScene("Main");
+        Debug.Log(PlayerPrefs.GetString("PlayerNickname") + " " + PlayerPrefs.GetInt("PlayerMaxScore"));
+
     }
 }

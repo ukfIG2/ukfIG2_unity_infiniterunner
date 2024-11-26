@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
     public static int _level;
     [SerializeField] private int _score;
     [SerializeField] private int _nextScore;
+    [SerializeField] private int _maxScoreOfPlayerWithNickname;
 
     public static bool _gameOver;
 
@@ -32,14 +33,17 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TMPro.TextMeshProUGUI _scoreText; // Zobrazenie skóre
     [SerializeField] private TMPro.TextMeshProUGUI _levelText; // Zobrazenie levelu
     [SerializeField] private TMPro.TextMeshProUGUI _pauseButtonText; // Zobrazenie textu tlačidla Pause/Resume
+    [SerializeField] private DatabaseManager _databaseManager;
 
     private bool _isPaused;
+    private bool _scoreInserted; // Flag to check if score has been inserted
 
     public void Awake()
     {
         Physics.gravity = new Vector3(0, -20f, 0); // Nastavenie gravitácie
         _gameOver = false;
         _isPaused = false;
+        _scoreInserted = false; // Initialize the flag
 
         if (_pauseMenuUI != null) _pauseMenuUI.SetActive(false);
         if (_gameOverUI != null) _gameOverUI.SetActive(false);
@@ -47,6 +51,7 @@ public class GameManager : MonoBehaviour
 
     public void Start()
     {
+        Application.targetFrameRate = 60;
         Time.timeScale = 1;
         _level = 1;
         _score = 0;
@@ -54,8 +59,6 @@ public class GameManager : MonoBehaviour
 
         SpawnNextRoadBatch(); // Inicializácia ciest
         SpawnPlayer(); // Spawn hráča
-
-        Debug.Log("Starting game mode: " + CurrentGameMode);
     }
 
     public void Update()
@@ -124,6 +127,12 @@ public class GameManager : MonoBehaviour
 
         if (_scoreText != null) _scoreText.text = $"Final Score: {_score}";
         if (_levelText != null) _levelText.text = $"Level Reached: {_level}";
+
+        if (!_scoreInserted)
+        {
+            _databaseManager.InsertScore(_score, PlayerPrefs.GetString("PlayerNickname"));
+            _scoreInserted = true; // Set the flag to true after inserting the score
+        }
     }
 
     public void NotifyRoadDestroyed()
@@ -201,4 +210,3 @@ public class GameManager : MonoBehaviour
         _gameOver = true;
     }
 }
-
